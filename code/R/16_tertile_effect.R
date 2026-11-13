@@ -1,4 +1,4 @@
-# Secondary RQ3 measure: cumulative RR by within-country tertile of built-up fraction, and the ratio tertile 3 / tertile 1,
+# Secondary urbanisation measure: cumulative RR by within-country tertile of built-up fraction, and the ratio tertile 3 / tertile 1,
 # at the pooled 10th and 90th percentiles of temperature and rainfall (centred on the pooled medians).
 suppressPackageStartupMessages({library(data.table); library(dlnm); library(glmmTMB)})
 r <- readRDS("out/v2_urbtert.rds"); m <- r$m; M <- readRDS("out/p3_model_data.rds")

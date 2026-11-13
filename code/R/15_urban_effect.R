@@ -1,4 +1,4 @@
-# RQ3: effect modification by built-up fraction (continuous, standardised). Primary estimand: ratio of cumulative RRs
+# Effect modification by built-up fraction (continuous, standardised). Primary estimand: ratio of cumulative RRs
 # (lags 0–6) between the 75th and 25th percentiles of built-up fraction, at the 10th and 90th percentiles of temperature
 # and rainfall, against the pooled median. Also writes curves at P25 and P75 of built-up fraction, restricted to the
 # exposure range shared by provinces below the 25th and above the 75th percentile.

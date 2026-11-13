@@ -1,8 +1,6 @@
-# RQ4 (revised after review): cases attributable to temperature and rainfall departing from each province's
-# climatological expectation for that calendar month. Reference = mean over 2010–20 of the cross-basis contribution
-# for the same province and calendar month (i.e. the average of f over the climatological distribution, not f of the
-# mean). Weighted by FITTED cases; positive (excess) and negative (deficit) components reported separately.
-# Intervals: 1000 draws of cross-basis coefficients (does not reflect model-specification or spatial clustering uncertainty).
+# Cases attributable to temperature and rainfall departing from each province's climatological distribution for the calendar
+# month: reference = mean over 2010-20 of the cross-basis contribution for the same province and calendar month; weighted by fitted
+# cases; excess, deficit and net reported. Intervals: 1000 draws of the cross-basis coefficients.
 suppressPackageStartupMessages({library(data.table); library(MASS); library(glmmTMB)})
 M <- readRDS("out/p3_model_data.rds"); r <- readRDS(Sys.getenv("P3_FIT", "out/v2_primary.rds")); m <- r$m
 b <- fixef(m)$cond; V <- vcov(m)$cond

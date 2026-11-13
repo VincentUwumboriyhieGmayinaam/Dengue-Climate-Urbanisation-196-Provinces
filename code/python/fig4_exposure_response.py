@@ -1,4 +1,4 @@
-"""Figure 4 (revised): exposure–response (top) and lag–response (bottom) for absolute temperature, absolute rainfall and
+"""Figure 4: exposure–response (top) and lag–response (bottom) for absolute temperature, absolute rainfall and
 temperature anomaly from the province's calendar-month climatology (within-province contrast)."""
 import pandas as pd, numpy as np, matplotlib as mpl, matplotlib.pyplot as plt
 mpl.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 7.2, 'axes.spines.top': False, 'axes.spines.right': False,

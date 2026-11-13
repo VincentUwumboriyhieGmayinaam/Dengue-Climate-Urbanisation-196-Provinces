@@ -1,4 +1,4 @@
-# Export curves and summary rows from revised (v2) fits. Usage: Rscript 13_export_v2.R
+# Export curves and summary rows from the model fits. Usage: Rscript code/R/13_export_v2.R
 # Writes: out/curves_cum_v2_<label>.csv, out/curves_lag_v2_<label>.csv (integer lags), out/table2_v2.csv,
 #         out/fit_summary_v2.csv (AIC, rho, sigma, n), out/anomaly_lag_by_country.csv
 suppressPackageStartupMessages({library(data.table); library(dlnm); library(glmmTMB)})

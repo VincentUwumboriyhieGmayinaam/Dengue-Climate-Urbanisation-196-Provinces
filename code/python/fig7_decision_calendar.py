@@ -1,4 +1,4 @@
-"""Figure 6: decision calendar. One row per country: typical month of peak reported cases (case-weighted circular mean
+"""Figure 7: decision calendar. One row per country: typical month of peak reported cases (case-weighted circular mean
 across provinces, with the interquartile range of province peaks), the months whose temperature anomaly is associated
 with the peak (lags in which the pooled +1°C anomaly lag-specific RR has a lower 95% bound above 1), and the cumulative
 RR per +1°C anomaly from the country's own anomaly model."""

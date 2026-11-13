@@ -1,10 +1,6 @@
-# Approximate one-step-ahead quantile residuals for the revised (v2) model, answering the statistical referee's
-# point that conditional Pearson residuals cannot detect misfit when a latent AR(1) field is present.
-# For each province-month t, the latent AR state is replaced by its one-step prediction rho * u(t-1) (conditional
-# modes), and the predictive distribution is Poisson-lognormal with innovation SD sigma * sqrt(1 - rho^2).
-# Randomised PIT values are converted to normal quantile residuals; we report PIT uniformity, the lag-1 and lag-12
-# autocorrelation within province (consecutive months only), and Moran's I by month.
-# Approximation: u(t-1) is the smoothed (not filtered) mode, so residuals are somewhat optimistic.
+# Approximate one-step-ahead quantile residuals: the latent AR state is replaced by its one-step prediction rho * u(t-1)
+# (conditional modes) and the predictive distribution is Poisson-lognormal with innovation SD sigma * sqrt(1 - rho^2).
+# Reports PIT uniformity, lag-1 and lag-12 autocorrelation within province (consecutive months) and Moran's I by month.
 suppressPackageStartupMessages({library(data.table); library(glmmTMB); library(spdep)})
 f <- commandArgs(TRUE)[1]; if (is.na(f)) f <- "out/v2_primary.rds"
 r <- readRDS(f); m <- r$m; M <- readRDS("out/p3_model_data.rds"); D <- M$D[r$keep]
@@ -35,4 +31,4 @@ out <- data.table(fit = basename(f), rho = rho, sigma = sig, pit_KS_D = unname(k
                   median_acf12 = median(a$acf12, na.rm = TRUE), median_moran = median(mi$I, na.rm = TRUE),
                   share_months_moran_gt_0.2 = mean(mi$I > 0.2, na.rm = TRUE))
 print(out); print(round(h, 3))
-fwrite(out, sub("\\.rds$", "_onestep.csv", f)); fwrite(data.table(bin = seq(.05, .95, .1), share = h), sub("\\.rds$", "_pit.csv", f))
+fwrite(a, sub("\\.rds$", "_acf_by_province.csv", f)); fwrite(mi, sub("\\.rds$", "_moran_by_month.csv", f)); fwrite(out, sub("\\.rds$", "_onestep.csv", f)); fwrite(data.table(bin = seq(.05, .95, .1), share = h), sub("\\.rds$", "_pit.csv", f))

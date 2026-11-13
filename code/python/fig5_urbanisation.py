@@ -1,4 +1,4 @@
-"""Figure 7: cumulative exposure–response at the 25th and 75th percentiles of (log) built-up fraction, within the exposure
+"""Figure 5: cumulative exposure–response at the 25th and 75th percentiles of (log) built-up fraction, within the exposure
 range shared by less and more built-up provinces, with the ratio of relative risks (P75/P25) at the 10th and 90th percentiles."""
 import pandas as pd, numpy as np, matplotlib as mpl, matplotlib.pyplot as plt
 mpl.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 7.2, 'axes.spines.top': False, 'axes.spines.right': False,

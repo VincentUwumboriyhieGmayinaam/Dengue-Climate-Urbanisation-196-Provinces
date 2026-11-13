@@ -1,10 +1,9 @@
-# Paper 3 – revised primary model (after internal review, 4 Nov 2026).
-# Changes from 04_fit_tmb.R: (1) province-specific seasonal harmonics (random, diagonal) on top of country harmonics;
-# (2) AR(1) time factor keeps ALL month levels (no collapsing of gaps); (3) options: exclude years, hold out 2021–22
-# (response set to NA so latent AR states are predicted forward), climate anomalies instead of absolute values,
-# population offset (GHSL) and continuous built-up interaction (RQ3).
-# Usage: Rscript 09_fit_v2.R <label> [key=value ...]
-#   keys: subset=ALL|ISO,ISO  drop_years=2015,2016  holdout=1  noclimate=1  noONI=1  anomaly=1  urban=1  offset=1
+# Primary and sensitivity models (glmmTMB): Poisson with distributed lag non-linear cross-bases for temperature and rainfall,
+# ONI lags 0-6, country harmonics with province-specific random harmonic deviations, country-by-year effect, province effect
+# (BYM2 covariance when P3_BYM2=<phi> is set, otherwise unstructured), province AR(1) over all calendar months, log population offset.
+# Usage: Rscript code/R/09_fit_v2.R <label> [key=value ...]
+#   keys: subset=ALL|ISO,ISO  drop_years=2015,2016  holdout=1 (2021-22 given zero weight)  noclimate=1  noONI=1  anomaly=1
+#         urban=1 [urbanraw=1]  urbtert=1  offset=0  harm=3  rainlog=1  lag=9  lagdf=4  cknots=1  ctrymonth=1  bym2=<phi>
 suppressPackageStartupMessages({library(data.table); library(dlnm); library(glmmTMB)})
 M <- readRDS("out/p3_model_data.rds"); list2env(M, environment())
 a <- commandArgs(TRUE); LABEL <- a[1]; kv <- setNames(sub(".*=", "", a[-1]), sub("=.*", "", a[-1]))
@@ -64,7 +63,10 @@ nn <- !is.na(X$y); idx <- which(keep)[nn]; keep <- seq_along(keep) %in% idx; X <
 multi <- nlevels(X$ctry) > 1
 fx <- c(if (!NOCLIM) c("cbT", "cbR"), if (!NOONI) "ONI", if (URB) c("u", "cbTu", "cbRu"), if (URBT) c("t2", "t3", "cbTt2", "cbTt3", "cbRt2", "cbRt3"),
         if (multi) paste0("ctry * (", HS, ")") else HS)
-re <- c("(1 | cy)", "(1 | prov)", paste0("diag(0 + ", HS, " | prov)"), if (!OFF && !NOTR) "(0 + year_c | prov)", "ar1(tf + 0 | prov)", if (CM) "(1 | ctry:tf)")
+BYM <- opt("bym2", Sys.getenv("P3_BYM2", ""))
+if (BYM != "") { phi <- as.numeric(BYM); Qg <- readRDS("out/bym2_Qginv_scaled.rds")[levels(X$prov), levels(X$prov)]
+  SIG <- (1 - phi) * diag(nrow(Qg)) + phi * Qg; dimnames(SIG) <- dimnames(Qg); X$one <- factor(1) }
+re <- c("(1 | cy)", if (BYM != "") "propto(0 + prov | one, SIG)" else "(1 | prov)", paste0("diag(0 + ", HS, " | prov)"), if (!OFF && !NOTR) "(0 + year_c | prov)", "ar1(tf + 0 | prov)", if (CM) "(1 | ctry:tf)")
 form <- as.formula(paste("y ~", paste(c(fx, re, if (OFF) "offset(logpop)"), collapse = " + ")))
 t0 <- Sys.time()
 m <- glmmTMB(form, family = poisson, data = X, weights = w,

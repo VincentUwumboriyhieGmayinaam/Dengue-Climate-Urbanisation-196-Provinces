@@ -1,5 +1,4 @@
-# Paper 3 – step 1: analytic data set, cross-bases and adjacency graph
-# Runs without INLA. Output: out/p3_model_data.rds (data, cross-bases, graph, settings)
+# Step 1: analytic data set (196 provinces), cross-bases and within-country adjacency graph -> out/p3_model_data.rds
 suppressPackageStartupMessages({library(data.table); library(dlnm); library(splines); library(sf); library(spdep)})
 setwd(Sys.getenv("P3_DIR", "."))
 
@@ -11,7 +10,7 @@ setorder(D, shapeID, year, month)
 comp <- D[year %between% c(2010, 2022), .(obs = mean(!is.na(dengue_cases))), by = shapeID]
 keep <- comp[obs >= 0.8, shapeID]
 D <- D[shapeID %in% keep]
-stopifnot(uniqueN(D$shapeID) == 196)
+N_PROV <- as.integer(Sys.getenv("P3_N_PROV", "196")); stopifnot(uniqueN(D$shapeID) == N_PROV)   # 209 in the zero-filled sensitivity data
 
 # ---- optional population and urbanisation (after the Earth Engine merge) ----
 popfile <- "data/P3_dengue_admin1_month_climate_pop_urban.csv"
@@ -27,7 +26,7 @@ D[, t := (year - 2009) * 12 + month]                       # 1..168 (2009-01 = 1
 D[, prov_id := as.integer(factor(shapeID))]
 D[, ctry_id := as.integer(factor(iso3))]
 D[, cy_id := as.integer(factor(paste(iso3, year)))]
-D[, year_c := year - 2016]                                 # centred year for the interim province trend
+D[, year_c := year - 2016]                                 # centred year for the province-trend sensitivity model
 
 # ---- cross-bases (lags built within province on the full 2009-2022 series) ----
 LAG <- 6
@@ -59,7 +58,7 @@ keep_cb <- function(cb, idx) {                              # subset rows, keep 
   for (n in setdiff(names(at), c("dim", "dimnames"))) attr(out, n) <- at[[n]]
   attr(out, "dimnames") <- list(NULL, colnames(cb)); out }
 D <- D[idx]; cb_t <- keep_cb(cb_t, idx); cb_r <- keep_cb(cb_r, idx); Om <- Om[idx, , drop = FALSE]
-stopifnot(nrow(D) == 30576, !anyNA(cb_t), !anyNA(cb_r), !anyNA(Om))
+stopifnot(nrow(D) == N_PROV * 156, !anyNA(cb_t), !anyNA(cb_r), !anyNA(Om))
 
 # ---- adjacency graph: within country only; islands linked to nearest province in the same country ----
 S <- st_read("/vsizip/data/boundaries/P3_provinces_ADM1_shapefile.zip/P3_provinces_ADM1.shp", quiet = TRUE)

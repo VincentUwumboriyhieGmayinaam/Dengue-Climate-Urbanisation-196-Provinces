@@ -1,4 +1,4 @@
-# Merge GHSL province epochs (2010, 2015, 2020; from P3_ghsl_zonal_run_on_PC.R) into the province-month file.
+# Merge GHSL province epochs (2010, 2015, 2020; from code/data/04_ghsl_zonal.R) into the province-month file.
 # Population: log-linear interpolation between epochs; 2021–22 extrapolated with each province's 2015–20 log-linear trend.
 # Built-up fraction: linear interpolation; 2021–22 extrapolated with the 2015–20 linear trend (bounded to [0, 1]).
 # Tertiles of the 2015 built-up fraction are defined within each country.

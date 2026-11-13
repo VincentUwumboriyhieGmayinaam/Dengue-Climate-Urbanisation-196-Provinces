@@ -1,4 +1,4 @@
-"""Figure 5 (revised): country-specific curves with country knots, centred on each country's median, within its 5th–95th percentile."""
+"""Figure 6: country-specific curves with country knots, centred on each country's median, within its 5th–95th percentile."""
 import pandas as pd, numpy as np, matplotlib as mpl, matplotlib.pyplot as plt
 mpl.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 7, 'axes.spines.top': False, 'axes.spines.right': False,
                      'axes.edgecolor': '#c3c2b7', 'axes.linewidth': .6, 'xtick.color': '#52514e', 'ytick.color': '#52514e'})
