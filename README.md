@@ -1,5 +1,7 @@
 # Urbanisation and delayed associations of temperature and rainfall with reported dengue in 196 provinces of six middle-income countries, 2010–22
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24204469.svg)](https://doi.org/10.5281/zenodo.24204469)
+
 Code, derived data and results for a spatiotemporal modelling study of monthly reported dengue in 196 first-level administrative units (provinces, states and departments) of Brazil, Colombia, Indonesia, Nicaragua, Peru and Thailand, 2010–22.
 
 ## What the analysis does
@@ -69,4 +71,4 @@ Code: MIT licence (see `LICENSE`). Derived data and results: CC BY 4.0, subject 
 
 ## Citation
 
-Please cite the published article (citation and DOI will be added on publication).
+Please cite the published article (citation will be added on publication). The code, data and results are archived at Zenodo: https://doi.org/10.5281/zenodo.24204469 (v1.0.0).
